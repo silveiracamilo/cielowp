@@ -1,4 +1,9 @@
-{  
+{ 
+  "autoload": {
+    "cielowp": {
+        "CieloWP": "src"
+    }
+  },  
   "name": "cielowp/api-3.0-php",
   "description": "Integração com a Developer Cielo API 3.0",
   "license": "MIT",
@@ -10,6 +15,6 @@
     "psr/log":"^1.1",
     "developercielo/api-3.0-php":"^1.3.1"
   },
-  "minimum-stability": "1.0",
+  "minimum-stability": "dev",
   "homepage": "https://github.com/silveiracamilo/cielowp"
 }
