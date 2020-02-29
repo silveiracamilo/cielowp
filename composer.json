@@ -1,4 +1,7 @@
-{  
+{ 
+  "autoload": {
+    "psr-0": {"CieloWP": "src/"}
+  }, 
   "name": "cielowp/api-3.0-php",
   "description": "Integração com a Developer Cielo API 3.0",
   "license": "MIT",
