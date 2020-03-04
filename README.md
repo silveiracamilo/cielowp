@@ -71,9 +71,30 @@ use CieloWP\CieloWP;
 use CieloWP\Gateway\Gateway;
 use CieloWP\Order\Order;
 
-$order_cielo = new Order($order->get_total(), $order_id, Gateway::TYPE_CREDIT_CARD, "master");
+$order_cielo = new Order($this->get_app_env(), $this->merchant_id, $this->merchant_key,
+						 $order->get_total(), $order_id, Gateway::TYPE_CREDIT_CARD);
+$returnCielo = CieloWP::process_payment($order_cielo);
+
+//return
+//$returnCielo['success']
+//$returnCielo['error']
+```
+
+### Criando um pagamento com cartão de crédito
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use CieloWP\CieloWP;
+use CieloWP\Gateway\Gateway;
+use CieloWP\Order\Order;
+
+$order_cielo = new Order($this->get_app_env(), $this->merchant_id, $this->merchant_key, $order->get_total(),
+                         $order_id, Gateway::TYPE_DEBIT_CARD, $this->get_api_return_url($order));
 $returnCielo = CieloWP::process_payment($order_cielo);
 
 //returno
 //$returnCielo['success']
 //$returnCielo['error']
+```
