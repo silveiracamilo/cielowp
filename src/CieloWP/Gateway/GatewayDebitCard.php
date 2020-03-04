@@ -2,7 +2,7 @@
 
 /*
 Class GatewayDebitCard
-Author Camilo da Silveira @ Unius
+Author Camilo da Silveira
 Site silveiracamilo.com.br
 */
 
@@ -18,23 +18,23 @@ use Cielo\API30\Ecommerce\Request\CieloRequestException;
 
 class GatewayDebitCard extends Gateway
 {
-	public function process_payment( $order ) 
+	public function process_payment() 
 	{
-		parent::process_payment($order);
+		parent::process_payment();
 
 		// Defina a URL de retorno para que o cliente possa voltar para a loja
         // após a autenticação do cartão
-        $this->payment->setReturnUrl($this->appUrl.'/pagamento/finalizar_debito');
+        $this->payment->setReturnUrl($this->order->return_url);
         $this->payment->setCapture(1);
         $this->payment->setAuthenticate(TRUE)
                       ->setType(Payment::PAYMENTTYPE_DEBITCARD);
 
         // Crie uma instância de Debit Card utilizando os dados de teste
         // esses dados estão disponíveis no manual de integração
-        $this->payment->debitCard($order->cvv, $order->brand)
-                ->setExpirationDate($order->expiration_date)
-                ->setCardNumber($order->card_number)
-                ->setHolder($order->name);
+        $this->payment->debitCard($this->order->cvv, $this->order->brand)
+                ->setExpirationDate($this->order->expiration_date)
+                ->setCardNumber($this->order->card_number)
+                ->setHolder($this->order->name);
 
         // Crie o pagamento na Cielo
         try {
@@ -42,20 +42,11 @@ class GatewayDebitCard extends Gateway
             // $this->sale = (new CieloEcommerce($this->merchant, $this->environment, new CieloLog()))->createSale($this->sale);
             $this->sale = (new CieloEcommerce($this->merchant, $this->environment))->createSale($this->sale);
 
-            $returnCode = $this->sale->getPayment()->getReturnCode();
-            $returnMessage = $this->sale->getPayment()->getReturnMessage();
+            // $returnCode = $this->sale->getPayment()->getReturnCode();
+            // $returnMessage = $this->sale->getPayment()->getReturnMessage();
             $returnAuthenticationUrl = $this->sale->getPayment()->getAuthenticationUrl();
             $paymentId = $this->sale->getPayment()->getPaymentId();
             $tid = $this->sale->getPayment()->getTid();
-            
-
-            /*echo "returnCode:".$returnCode."<br>";
-            echo "returnMessage:".$returnMessage."<br><br>";
-            echo "returnAuthenticationUrl:".$returnAuthenticationUrl."<br><br>";
-            echo "paymentId:".$paymentId."<br><br>";
-            echo "tid:".$tid."<br><br>";
-            echo "sale:<br><br>";
-            var_export($this->sale);*/
 
             if(empty($returnAuthenticationUrl) || 
                $returnAuthenticationUrl==NULL){

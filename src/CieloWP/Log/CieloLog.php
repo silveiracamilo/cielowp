@@ -2,7 +2,7 @@
 
 /*
 Class CieloLog
-Author Camilo da Silveira @ Unius
+Author Camilo da Silveira
 Site silveiracamilo.com.br
 */
 
